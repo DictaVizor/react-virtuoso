@@ -25,6 +25,8 @@ export interface ListState {
   top: number
   bottom: number
   totalCount: number
+  customStartIndex?: number
+  customEndIndex?: number
 }
 
 function probeItemSet(index: number, sizes: SizeState, data: Data) {
@@ -135,7 +137,7 @@ export function buildListState(
 
 export const listStateSystem = u.system(
   ([
-    { sizes, totalCount, data, firstItemIndex },
+    { sizes, totalCount, data, firstItemIndex, customEndIndex, customStartIndex },
     groupedListSystem,
     { visibleRange, listBoundary, topListHeight: rangeTopListHeight },
     { scrolledToInitialItem, initialTopMostItemIndex },
@@ -159,6 +161,8 @@ export const listStateSystem = u.system(
           scrolledToInitialItem,
           u.duc(topItemsIndexes),
           u.duc(firstItemIndex),
+          customStartIndex,
+          customEndIndex,
           data
         ),
         u.filter(([mount]) => mount),
@@ -172,6 +176,8 @@ export const listStateSystem = u.system(
             scrolledToInitialItem,
             topItemsIndexes,
             firstItemIndex,
+            customStartIndex,
+            customEndIndex,
             data,
           ]) => {
             const sizesValue = sizes
@@ -234,7 +240,7 @@ export const listStateSystem = u.system(
                 const size = point.size
 
                 if (point.offset < startOffset) {
-                  rangeStartIndex += Math.floor((startOffset - point.offset) / size)
+                  rangeStartIndex += Math.floor(((customStartIndex || startOffset) - point.offset) / size)
                   offset += (rangeStartIndex - range.start) * size
                 }
 
@@ -243,7 +249,7 @@ export const listStateSystem = u.system(
                   rangeStartIndex = minStartIndex
                 }
 
-                const endIndex = Math.min(range.end, maxIndex)
+                const endIndex = Math.min(range.end, maxIndex, ...(customEndIndex ? [customEndIndex] : []))
 
                 for (let i = rangeStartIndex; i <= endIndex; i++) {
                   if (offset >= endOffset) {

@@ -505,6 +505,8 @@ export const {
       scrollerRef: 'scrollerRef',
       logLevel: 'logLevel',
       react18ConcurrentRendering: 'react18ConcurrentRendering',
+      customStartIndex: 'customStartIndex',
+      customEndIndex: 'customEndIndex',
 
       // deprecated
       item: 'item',
