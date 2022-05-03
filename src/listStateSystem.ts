@@ -1,5 +1,5 @@
 import * as u from '@virtuoso.dev/urx'
-import { empty, findMaxKeyValue, Range, ranges, rangesWithin } from './AATree'
+import { empty, findMaxKeyValue, Range, rangesWithin } from './AATree'
 import { groupedListSystem } from './groupedListSystem'
 import { getInitialTopMostItemIndexNumber, initialTopMostItemIndexSystem } from './initialTopMostItemIndexSystem'
 import { Item, ListItem, ListRange } from './interfaces'
@@ -10,7 +10,6 @@ import { Data, originalIndexFromItemIndex, SizeState, sizeSystem, hasGroups, ran
 import { stateFlagsSystem } from './stateFlagsSystem'
 import { rangeComparator, tupleComparator } from './comparators'
 import { uniqBy } from 'lodash'
-import { totalListHeightSystem } from './totalListHeightSystem'
 
 export type ListItems = ListItem<unknown>[]
 export interface TopListState {
@@ -232,27 +231,26 @@ export const listStateSystem = u.system(
               return null
             }
             if (customStartIndex) {
-              offsetPointRanges = uniqBy([
-                ...rangesWithinOffsets(offsetTree, 0, endOffset, minStartIndex).filter(({ end }) => customStartIndex <= end),
-                ...offsetPointRanges,
-              ],
-              'start'
+              offsetPointRanges = uniqBy(
+                [
+                  ...rangesWithinOffsets(offsetTree, 0, endOffset, minStartIndex).filter(({ end }) => customStartIndex <= end),
+                  ...offsetPointRanges,
+                ],
+                'start'
               )
               offsetPointRanges.sort((a, b) => a.start - b.start)
             }
-
 
             if (customEndIndex) {
-              offsetPointRanges = uniqBy([
-                ...rangesWithinOffsets(offsetTree, startOffset, Infinity, minStartIndex).filter(({ end }) => customEndIndex >= end),
-                ...offsetPointRanges,
-              ],
-              'start'
+              offsetPointRanges = uniqBy(
+                [
+                  ...rangesWithinOffsets(offsetTree, startOffset, Infinity, minStartIndex).filter(({ end }) => customEndIndex >= end),
+                  ...offsetPointRanges,
+                ],
+                'start'
               )
               offsetPointRanges.sort((a, b) => a.start - b.start)
             }
-
-
 
             const maxIndex = totalCount - 1
 
@@ -285,8 +283,6 @@ export const listStateSystem = u.system(
                 }
               }
             })
-
-            console.log(items)
 
             return buildListState(items, topItems, totalCount, sizesValue, firstItemIndex)
           }
@@ -373,7 +369,7 @@ export const listStateSystem = u.system(
     initialTopMostItemIndexSystem,
     scrollToIndexSystem,
     stateFlagsSystem,
-    propsReadySystem,
+    propsReadySystem
   ),
   { singleton: true }
 )
