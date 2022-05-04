@@ -90,7 +90,7 @@ function ChatList({ userId, messages = [], onSend, onReceive, placeholder }: Cha
       <Virtuoso
         ref={ref}
         style={{ flex: 1 }}
-        initialTopMostItemIndex={messages.length - 1}
+        // initialTopMostItemIndex={messages.length - 1}
         followOutput={(isAtBottom) => {
           if (isMyOwnMessage.current) {
             // if the user has scrolled away and sends a message, bring him to the bottom instantly
@@ -102,7 +102,7 @@ function ChatList({ userId, messages = [], onSend, onReceive, placeholder }: Cha
         }}
         itemContent={row}
         data={messages}
-        customStartIndex={100}
+        customStartIndex={60}
       />
       <TextWrapper style={{ flex: 0, minHeight: 30 }}>
         <form

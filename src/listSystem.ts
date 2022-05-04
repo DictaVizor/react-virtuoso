@@ -71,7 +71,6 @@ export const listSystem = u.system(
       firstItemIndex,
       groupIndices,
       statefulTotalCount,
-      customStartIndex,
     },
     { initialTopMostItemIndex, scrolledToInitialItem },
     domIO,
@@ -100,7 +99,6 @@ export const listSystem = u.system(
       groupCounts,
       fixedItemHeight: fixedItemSize,
       defaultItemHeight: defaultItemSize,
-      customStartIndex,
       ...followOutput,
 
       // output

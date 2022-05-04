@@ -213,6 +213,7 @@ export interface Item<D> {
   offset: number
   size: number
   data?: D
+  isCustom?: boolean
 }
 export interface RecordItem<D> extends Item<D> {
   type?: undefined

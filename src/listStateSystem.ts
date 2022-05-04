@@ -26,7 +26,7 @@ export interface ListState {
   top: number
   bottom: number
   totalCount: number
-  customStartIndex?: number
+  extraSize: number
 }
 
 function probeItemSet(index: number, sizes: SizeState, data: Data) {
@@ -51,6 +51,7 @@ const EMPTY_LIST_STATE: ListState = {
   bottom: 0,
   topListHeight: 0,
   totalCount: 0,
+  extraSize: 0,
 }
 
 function transposeItems(items: Item<any>[], sizes: SizeState, firstItemIndex: number): ListItems {
@@ -113,6 +114,9 @@ export function buildListState(
   let offsetTop = 0
   let bottom = 0
 
+  const filteredItems = items.filter((item) => item.isCustom)
+  const extraSize = filteredItems.reduce<number>((a, b) => a + b.size, 0)
+
   if (items.length > 0) {
     offsetTop = items[0].offset
     const lastItem = items[items.length - 1]
@@ -129,17 +133,18 @@ export function buildListState(
     topListHeight: topItems.reduce((height, item) => item.size + height, 0),
     offsetTop,
     offsetBottom,
-    top,
-    bottom,
+    top: top,
+    bottom: bottom,
     totalCount,
+    extraSize,
   }
 }
 
 export const listStateSystem = u.system(
   ([
-    { sizes, totalCount, data, firstItemIndex, customStartIndex },
+    { sizes, totalCount, data, firstItemIndex },
     groupedListSystem,
-    { visibleRange, listBoundary, topListHeight: rangeTopListHeight },
+    { visibleRange, listBoundary, topListHeight: rangeTopListHeight, customStartIndex, extraSize },
     { scrolledToInitialItem, initialTopMostItemIndex },
     { topListHeight },
     stateFlags,
@@ -147,8 +152,10 @@ export const listStateSystem = u.system(
   ]) => {
     const topItemsIndexes = u.statefulStream<Array<number>>([])
     const itemsRendered = u.stream<ListItems>()
+    const startIndex = u.statefulStream<number | undefined>(undefined)
 
     u.connect(groupedListSystem.topItemsIndexes, topItemsIndexes)
+    u.connect(customStartIndex, startIndex)
 
     const listState = u.statefulStreamFromEmitter(
       u.pipe(
@@ -161,7 +168,7 @@ export const listStateSystem = u.system(
           scrolledToInitialItem,
           u.duc(topItemsIndexes),
           u.duc(firstItemIndex),
-          customStartIndex,
+          startIndex,
           data
         ),
         u.filter(([mount]) => mount),
@@ -228,20 +235,34 @@ export const listStateSystem = u.system(
               return null
             }
 
+
+            const firstIndex = offsetPointRanges[0].start
+            const lastIndex = offsetPointRanges[offsetPointRanges.length - 1].start
             if (customStartIndex !== undefined) {
-              const firstIndex = offsetPointRanges[0].start
               if (customStartIndex < firstIndex) {
+                const customOffsetPointRanges = rangesWithinOffsets(offsetTree, 0, startOffset, minStartIndex).filter(
+                  ({ start }) => start >= customStartIndex && start < firstIndex
+                )
+
                 offsetPointRanges = uniqBy(
                   [
-                    ...rangesWithinOffsets(offsetTree, 0, endOffset, minStartIndex).filter(({ end }) => customStartIndex <= end),
+                    ...customOffsetPointRanges.map((range) => {
+                      return { ...range, isCustom: true }
+                    }),
                     ...offsetPointRanges,
                   ],
                   'start'
-                )
+                  )
               } else {
+                const customOffsetPointRanges = rangesWithinOffsets(offsetTree, startOffset, Infinity, minStartIndex).filter(
+                  ({ start }) => start <= customStartIndex && lastIndex <= start
+                )
+
                 offsetPointRanges = uniqBy(
                   [
-                    ...rangesWithinOffsets(offsetTree, startOffset, Infinity, minStartIndex).filter(({ end }) => customStartIndex >= end),
+                    ...customOffsetPointRanges.map((range) => {
+                      return { ...range, isCustom: true }
+                    }),
                     ...offsetPointRanges,
                   ],
                   'start'
@@ -250,7 +271,9 @@ export const listStateSystem = u.system(
               offsetPointRanges.sort((a, b) => a.start - b.start)
             }
 
+            
             const maxIndex = totalCount - 1
+            const extraSize = offsetPointRanges.filter((range) => range.isCustom).reduce<number>((a, b) => a + b.value.size, 0)
 
             const items = u.tap([] as Item<any>[], (result) => {
               for (const range of offsetPointRanges) {
@@ -261,8 +284,8 @@ export const listStateSystem = u.system(
 
                 const endIndex = Math.min(range.end, maxIndex)
 
-                if (point.offset < startOffset && customStartIndex === undefined) {
-                  rangeStartIndex += Math.floor((startOffset - point.offset) / size)
+                if (point.offset < startOffset - extraSize && !range.isCustom) {
+                  rangeStartIndex += Math.floor((startOffset - point.offset - extraSize) / size)
                   offset += (rangeStartIndex - range.start) * size
                 }
 
@@ -272,11 +295,11 @@ export const listStateSystem = u.system(
                 }
 
                 for (let i = rangeStartIndex; i <= endIndex; i++) {
-                  if (offset >= endOffset && customStartIndex === undefined) {
+                  if (offset >= endOffset && !range.isCustom) {
                     break
                   }
 
-                  result.push({ index: i, size, offset: offset, data: data && data[i] })
+                  result.push({ index: i, size, offset: offset, data: data && data[i], isCustom: range.isCustom })
                   offset += size
                 }
               }
@@ -310,6 +333,14 @@ export const listStateSystem = u.system(
         u.map((state) => [state.top, state.bottom])
       ),
       listBoundary
+    )
+
+    u.connect(
+      u.pipe(
+        listState,
+        u.map((state) => state.extraSize)
+      ),
+      extraSize
     )
 
     u.connect(

@@ -35,6 +35,8 @@ export const sizeRangeSystem = u.system(
     const fixedHeaderHeight = u.statefulStream(0)
     const increaseViewportBy = u.statefulStream<ViewportIncrease>(0)
     const overscan = u.statefulStream<Overscan>(0)
+    const customStartIndex = u.statefulStream<number | undefined>(undefined)
+    const extraSize = u.stream<number>()
 
     const visibleRange = u.statefulStreamFromEmitter(
       u.pipe(
@@ -47,7 +49,8 @@ export const sizeRangeSystem = u.system(
           u.duc(topListHeight),
           u.duc(fixedHeaderHeight),
           u.duc(deviation),
-          u.duc(increaseViewportBy)
+          u.duc(increaseViewportBy),
+          u.duc(extraSize)
         ),
         u.map(
           ([
@@ -60,6 +63,7 @@ export const sizeRangeSystem = u.system(
             fixedHeaderHeight,
             deviation,
             increaseViewportBy,
+            extraSize,
           ]) => {
             const top = scrollTop - deviation
             const stickyHeaderHeight = topListHeight + fixedHeaderHeight
@@ -73,12 +77,11 @@ export const sizeRangeSystem = u.system(
             listBottom += headerHeight + fixedHeaderHeight
             listBottom -= deviation
 
-            // console.log({ listTop, scrollTop, stickyHeaderHeight, topViewportAddition })
-            if (listTop > scrollTop + stickyHeaderHeight - topViewportAddition) {
+            if (listTop > scrollTop + stickyHeaderHeight - topViewportAddition - extraSize) {
               direction = UP
             }
 
-            if (listBottom < scrollTop - headerVisible + viewportHeight + bottomViewportAddition) {
+            if (listBottom < scrollTop - headerVisible + viewportHeight + bottomViewportAddition + extraSize) {
               direction = DOWN
             }
 
@@ -110,6 +113,8 @@ export const sizeRangeSystem = u.system(
       topListHeight,
       fixedHeaderHeight,
       increaseViewportBy,
+      customStartIndex,
+      extraSize,
 
       // output
       visibleRange,
