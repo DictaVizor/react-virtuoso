@@ -102,6 +102,7 @@ function ChatList({ userId, messages = [], onSend, onReceive, placeholder }: Cha
         }}
         itemContent={row}
         data={messages}
+        customStartIndex={100}
       />
       <TextWrapper style={{ flex: 0, minHeight: 30 }}>
         <form

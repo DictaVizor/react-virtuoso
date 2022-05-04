@@ -26,7 +26,6 @@ import { Table } from './Table'
 
 export interface VirtuosoProps<D, C> extends ListRootProps {
   customStartIndex?: number
-  customEndIndex?: number
   /**
    * The total amount of items to be rendered.
    */

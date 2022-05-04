@@ -27,7 +27,6 @@ export interface ListState {
   bottom: number
   totalCount: number
   customStartIndex?: number
-  customEndIndex?: number
 }
 
 function probeItemSet(index: number, sizes: SizeState, data: Data) {
@@ -138,7 +137,7 @@ export function buildListState(
 
 export const listStateSystem = u.system(
   ([
-    { sizes, totalCount, data, firstItemIndex, customEndIndex, customStartIndex },
+    { sizes, totalCount, data, firstItemIndex, customStartIndex },
     groupedListSystem,
     { visibleRange, listBoundary, topListHeight: rangeTopListHeight },
     { scrolledToInitialItem, initialTopMostItemIndex },
@@ -163,7 +162,6 @@ export const listStateSystem = u.system(
           u.duc(topItemsIndexes),
           u.duc(firstItemIndex),
           customStartIndex,
-          customEndIndex,
           data
         ),
         u.filter(([mount]) => mount),
@@ -178,7 +176,6 @@ export const listStateSystem = u.system(
             topItemsIndexes,
             firstItemIndex,
             customStartIndex,
-            customEndIndex,
             data,
           ]) => {
             const sizesValue = sizes
@@ -230,25 +227,26 @@ export const listStateSystem = u.system(
             if (offsetPointRanges.length === 0) {
               return null
             }
-            if (customStartIndex) {
-              offsetPointRanges = uniqBy(
-                [
-                  ...rangesWithinOffsets(offsetTree, 0, endOffset, minStartIndex).filter(({ end }) => customStartIndex <= end),
-                  ...offsetPointRanges,
-                ],
-                'start'
-              )
-              offsetPointRanges.sort((a, b) => a.start - b.start)
-            }
 
-            if (customEndIndex) {
-              offsetPointRanges = uniqBy(
-                [
-                  ...rangesWithinOffsets(offsetTree, startOffset, Infinity, minStartIndex).filter(({ end }) => customEndIndex >= end),
-                  ...offsetPointRanges,
-                ],
-                'start'
-              )
+            if (customStartIndex !== undefined) {
+              const firstIndex = offsetPointRanges[0].start
+              if (customStartIndex < firstIndex) {
+                offsetPointRanges = uniqBy(
+                  [
+                    ...rangesWithinOffsets(offsetTree, 0, endOffset, minStartIndex).filter(({ end }) => customStartIndex <= end),
+                    ...offsetPointRanges,
+                  ],
+                  'start'
+                )
+              } else {
+                offsetPointRanges = uniqBy(
+                  [
+                    ...rangesWithinOffsets(offsetTree, startOffset, Infinity, minStartIndex).filter(({ end }) => customStartIndex >= end),
+                    ...offsetPointRanges,
+                  ],
+                  'start'
+                )
+              }
               offsetPointRanges.sort((a, b) => a.start - b.start)
             }
 
@@ -274,7 +272,7 @@ export const listStateSystem = u.system(
                 }
 
                 for (let i = rangeStartIndex; i <= endIndex; i++) {
-                  if (offset >= endOffset && customEndIndex === undefined) {
+                  if (offset >= endOffset && customStartIndex === undefined) {
                     break
                   }
 

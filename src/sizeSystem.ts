@@ -261,7 +261,6 @@ export const sizeSystem = u.system(
     const shiftWith = u.stream<number>()
     const firstItemIndex = u.statefulStream(0)
     const customStartIndex = u.statefulStream<number | undefined>(undefined)
-    const customEndIndex = u.statefulStream<number | undefined>(undefined)
     const groupIndices = u.statefulStream([] as number[])
     const fixedItemSize = u.statefulStream<OptionalNumber>(undefined)
     const defaultItemSize = u.statefulStream<OptionalNumber>(undefined)
@@ -463,7 +462,6 @@ export const sizeSystem = u.system(
       beforeUnshiftWith,
       firstItemIndex,
       customStartIndex,
-      customEndIndex,
 
       // output
       sizes,
