@@ -318,7 +318,6 @@ export const listStateSystem = u.system(
 
                 result[targetIndex].offset = result?.[targetIndex + 1]?.offset || result?.[targetIndex - 1]?.offset || 0
 
-                console.log(result)
               }
             })
 

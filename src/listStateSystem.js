@@ -253,7 +253,6 @@ export const listStateSystem = u.system(
                 result.sort((a, b) => a.index - b.index)
                 const targetIndex = result.findIndex(({ index }) => index === keepIndexRendered)
                 result[targetIndex].offset = result?.[targetIndex + 1]?.offset || result?.[targetIndex - 1]?.offset || 0
-                console.log(result)
               }
             })
             return buildListState(items, topItems, totalCount, sizesValue, firstItemIndex)

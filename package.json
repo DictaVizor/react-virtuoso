@@ -1,5 +1,5 @@
 {
-  "name": "react-virtuoso",
+  "name": "@dicta/react-virtuoso",
   "author": "Petyo Ivanov",
   "sideEffects": false,
   "version": "0.0.1-development",

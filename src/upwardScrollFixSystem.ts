@@ -50,7 +50,6 @@ export const upwardScrollFixSystem = u.system(
         u.filter(([amount]) => amount !== 0),
         u.withLatestFrom(scrollTop, scrollDirection, scrollingInProgress, log, isAtBottom, atBottomState),
         u.filter(([, scrollTop, scrollDirection, scrollingInProgress]) => {
-          // console.log({ amount, scrollTop, scrollDirection, scrollingInProgress, isAtBottom, atBottomState })
           return !scrollingInProgress && scrollTop !== 0 && scrollDirection === UP // && (isAtBottom ? amount > 0 : true)
         }),
         u.map(([[amount], , , , log]) => {
