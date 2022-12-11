@@ -144,7 +144,7 @@ export const listStateSystem = u.system(
   ([
     { sizes, totalCount, data, firstItemIndex },
     groupedListSystem,
-    { visibleRange, listBoundary, topListHeight: rangeTopListHeight, customStartIndex, extraSize },
+    { visibleRange, listBoundary, topListHeight: rangeTopListHeight, customStartIndex, extraSize, keepIndexRendered },
     { scrolledToInitialItem, initialTopMostItemIndex },
     { topListHeight },
     stateFlags,
@@ -153,6 +153,7 @@ export const listStateSystem = u.system(
     const topItemsIndexes = u.statefulStream<Array<number>>([])
     const itemsRendered = u.stream<ListItems>()
     const startIndex = u.statefulStream<number | undefined>(undefined)
+
 
     u.connect(groupedListSystem.topItemsIndexes, topItemsIndexes)
     u.connect(customStartIndex, startIndex)
@@ -169,6 +170,7 @@ export const listStateSystem = u.system(
           u.duc(topItemsIndexes),
           u.duc(firstItemIndex),
           startIndex,
+          keepIndexRendered,
           data
         ),
         u.filter(([mount]) => mount),
@@ -183,11 +185,11 @@ export const listStateSystem = u.system(
             topItemsIndexes,
             firstItemIndex,
             customStartIndex,
+            keepIndexRendered,
             data,
           ]) => {
             const sizesValue = sizes
             const { sizeTree, offsetTree } = sizesValue
-
             if (totalCount === 0 || (startOffset === 0 && endOffset === 0)) {
               return EMPTY_LIST_STATE
             }
@@ -303,6 +305,18 @@ export const listStateSystem = u.system(
                   offset += size
                 }
               }
+
+              if(keepIndexRendered && !result.find(({index}) => index === keepIndexRendered)) {
+                result.push({index: keepIndexRendered, size: 0, offset: 0, data: data && data[keepIndexRendered], renderOutside: true, isCustom: true})
+                result.sort((a, b) => a.index - b.index)
+
+                const targetIndex = result.findIndex(({index}) => index === keepIndexRendered)
+
+                result[targetIndex].offset = result?.[targetIndex + 1]?.offset || result?.[targetIndex - 1]?.offset || 0
+
+                console.log(result)
+              }
+
             })
 
             return buildListState(items, topItems, totalCount, sizesValue, firstItemIndex)

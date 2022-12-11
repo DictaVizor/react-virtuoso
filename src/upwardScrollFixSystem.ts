@@ -23,8 +23,12 @@ export const upwardScrollFixSystem = u.system(
         listState,
         u.withLatestFrom(lastJumpDueToItemResize),
         u.scan(
-          ([, prevItems, prevTotalCount, prevTotalHeight], [{ items, totalCount, bottom, offsetBottom }, lastJumpDueToItemResize]) => {
+          (
+            [, prevItems, prevTotalCount, prevTotalHeight],
+            [{ items: _items, totalCount, bottom, offsetBottom }, lastJumpDueToItemResize]
+          ) => {
             const totalHeight = bottom + offsetBottom
+            const items = _items.filter(({ renderOutside }) => !renderOutside)
 
             let newDev = 0
             if (prevTotalCount === totalCount) {

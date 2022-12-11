@@ -228,60 +228,64 @@ export const Items = React.memo(function VirtuosoItems({ showTopList = false }: 
     return createElement(EmptyPlaceholder, contextPropIfNotDomElement(EmptyPlaceholder, context))
   }
 
-  return createElement(
-    ListComponent,
-    {
-      ...contextPropIfNotDomElement(ListComponent, context),
-      ref: callbackRef,
-      style: containerStyle,
-      'data-test-id': showTopList ? 'virtuoso-top-item-list' : 'virtuoso-item-list',
-    },
-    (showTopList ? listState.topItems : listState.items).map((item) => {
-      const index = item.originalIndex!
-      const key = computeItemKey(index + firstItemIndex, item.data, context)
+  return (
+    <>
+      {createElement(
+        ListComponent,
+        {
+          ...contextPropIfNotDomElement(ListComponent, context),
+          ref: callbackRef,
+          style: containerStyle,
+          'data-test-id': showTopList ? 'virtuoso-top-item-list' : 'virtuoso-item-list',
+        },
+        (showTopList ? listState.topItems : listState.items).map((item) => {
+          const index = item.originalIndex!
+          const key = computeItemKey(index + firstItemIndex, item.data, context)
 
-      if (isSeeking) {
-        return createElement(ScrollSeekPlaceholder, {
-          ...contextPropIfNotDomElement(ScrollSeekPlaceholder, context),
-          key,
-          index: item.index,
-          height: item.size,
-          type: item.type || 'item',
-          ...(item.type === 'group' ? {} : { groupIndex: item.groupIndex }),
+          if (isSeeking) {
+            return createElement(ScrollSeekPlaceholder, {
+              ...contextPropIfNotDomElement(ScrollSeekPlaceholder, context),
+              key,
+              index: item.index,
+              height: item.size,
+              type: item.type || 'item',
+              ...(item.type === 'group' ? {} : { groupIndex: item.groupIndex }),
+            })
+          }
+
+          if (item.type === 'group') {
+            return createElement(
+              GroupComponent,
+              {
+                ...contextPropIfNotDomElement(GroupComponent, context),
+                key,
+                'data-index': index,
+                'data-known-size': item.size,
+                'data-item-index': item.index,
+                style: GROUP_STYLE,
+              } as any,
+              groupContent(item.index)
+            )
+          } else {
+            return createElement(
+              ItemComponent,
+              {
+                ...contextPropIfNotDomElement(ItemComponent, context),
+                key,
+                'data-index': index,
+                'data-known-size': item.size,
+                'data-item-index': item.index,
+                'data-item-group-index': item.groupIndex,
+                style: ITEM_STYLE,
+              } as any,
+              hasGroups
+                ? (itemContent as GroupItemContent<any, any>)(item.index, item.groupIndex!, item.data, context)
+                : (itemContent as ItemContent<any, any>)(item.index, item.data, context)
+            )
+          }
         })
-      }
-
-      if (item.type === 'group') {
-        return createElement(
-          GroupComponent,
-          {
-            ...contextPropIfNotDomElement(GroupComponent, context),
-            key,
-            'data-index': index,
-            'data-known-size': item.size,
-            'data-item-index': item.index,
-            style: GROUP_STYLE,
-          } as any,
-          groupContent(item.index)
-        )
-      } else {
-        return createElement(
-          ItemComponent,
-          {
-            ...contextPropIfNotDomElement(ItemComponent, context),
-            key,
-            'data-index': index,
-            'data-known-size': item.size,
-            'data-item-index': item.index,
-            'data-item-group-index': item.groupIndex,
-            style: ITEM_STYLE,
-          } as any,
-          hasGroups
-            ? (itemContent as GroupItemContent<any, any>)(item.index, item.groupIndex!, item.data, context)
-            : (itemContent as ItemContent<any, any>)(item.index, item.data, context)
-        )
-      }
-    })
+      )}
+    </>
   )
 })
 
@@ -506,6 +510,7 @@ export const {
       logLevel: 'logLevel',
       react18ConcurrentRendering: 'react18ConcurrentRendering',
       customStartIndex: 'customStartIndex',
+      keepIndexRendered: 'keepIndexRendered',
 
       // deprecated
       item: 'item',

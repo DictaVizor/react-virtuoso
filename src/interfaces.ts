@@ -214,12 +214,14 @@ export interface Item<D> {
   size: number
   data?: D
   isCustom?: boolean
+  renderOutside?: boolean
 }
 export interface RecordItem<D> extends Item<D> {
   type?: undefined
   groupIndex?: number
   originalIndex?: number
   data?: D
+  renderOutside?: boolean
 }
 
 export interface GroupItem<D> extends Item<D> {

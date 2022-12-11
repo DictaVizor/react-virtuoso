@@ -36,6 +36,7 @@ export const sizeRangeSystem = u.system(
     const increaseViewportBy = u.statefulStream<ViewportIncrease>(0)
     const overscan = u.statefulStream<Overscan>(0)
     const customStartIndex = u.statefulStream<number | undefined>(undefined)
+    const keepIndexRendered = u.statefulStream<number | undefined>(undefined)
     const extraSize = u.stream<number>()
 
     const visibleRange = u.statefulStreamFromEmitter(
@@ -114,6 +115,7 @@ export const sizeRangeSystem = u.system(
       fixedHeaderHeight,
       increaseViewportBy,
       customStartIndex,
+      keepIndexRendered,
       extraSize,
 
       // output
