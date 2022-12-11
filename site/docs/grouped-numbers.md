@@ -12,23 +12,26 @@ import { GroupedVirtuoso } from 'react-virtuoso'
 import { useMemo } from 'react'
 
 export default function App() {
-  const groupCounts = useMemo(() => { 
+  const groupCounts = useMemo(() => {
     return Array(1000).fill(10)
   }, [])
-
 
   return (
     <GroupedVirtuoso
       style={{ height: 400 }}
       groupCounts={groupCounts}
-      groupContent={index => {
+      groupContent={(index) => {
         return (
-            <div style={{ backgroundColor: 'white' }}>Group {index * 10} &ndash; {index * 10 + 10}</div>
+          <div style={{ backgroundColor: 'white' }}>
+            Group {index * 10} &ndash; {index * 10 + 10}
+          </div>
         )
       }}
       itemContent={(index, groupIndex) => {
         return (
-              <div>{index} (group {groupIndex})</div>
+          <div>
+            {index} (group {groupIndex})
+          </div>
         )
       }}
     />

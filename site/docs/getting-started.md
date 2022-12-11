@@ -1,7 +1,7 @@
 ---
 id: getting-started
 title: Getting Started with React Virtuoso
-sidebar_label: Getting Started 
+sidebar_label: Getting Started
 slug: /
 ---
 
@@ -16,26 +16,20 @@ Out of the box, Virtuoso:
 - Supports headers and footers.
 - Can **pin the first `N` items** to the top of the list.
 
-To start, install `react-virtuoso` in your React project. The package exports the `Virtuoso`,  `TableVirtuoso`, `GroupedVirtuoso`, and `VirtuosoGrid` components.
+To start, install `react-virtuoso` in your React project. The package exports the `Virtuoso`, `TableVirtuoso`, `GroupedVirtuoso`, and `VirtuosoGrid` components.
 
 ```bash
 npm install react-virtuoso
 ```
 
-Add the Component to your application. 
+Add the Component to your application.
 
 ```jsx
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Virtuoso } from 'react-virtuoso'
 
-const App = () => (
-  <Virtuoso
-    style={{ height: '400px' }}
-    totalCount={200}
-    itemContent={index => <div>Item {index}</div>}
-  />
-)
+const App = () => <Virtuoso style={{ height: '400px' }} totalCount={200} itemContent={(index) => <div>Item {index}</div>} />
 
 ReactDOM.render(<App />, document.getElementById('root'))
 ```
@@ -46,11 +40,7 @@ Here's how it looks (live editor):
 import { Virtuoso } from 'react-virtuoso'
 
 export default function App() {
-  return <Virtuoso
-    style={{ height: "400px", }}
-    totalCount={200}
-    itemContent={(index) => <div>Item {index}</div>}
-  />
+  return <Virtuoso style={{ height: '400px' }} totalCount={200} itemContent={(index) => <div>Item {index}</div>} />
 }
 ```
 
@@ -67,18 +57,17 @@ The `GroupedVirtuoso` component is similar to the "flat" `Virtuoso`, with the fo
 ```jsx live
 import { GroupedVirtuoso } from 'react-virtuoso'
 
-  const groupCounts = []
-  for (let index = 0; index < 1000; index++) {
-    groupCounts.push(10)
-  }
+const groupCounts = []
+for (let index = 0; index < 1000; index++) {
+  groupCounts.push(10)
+}
 
 export default function App() {
-
   return (
     <GroupedVirtuoso
-    style={{ height: "400px" }}
+      style={{ height: '400px' }}
       groupCounts={groupCounts}
-      groupContent={index => {
+      groupContent={(index) => {
         return (
           <div style={{ backgroundColor: 'white' }}>
             Group {index * 10} &ndash; {index * 10 + 10}
@@ -87,7 +76,9 @@ export default function App() {
       }}
       itemContent={(index, groupIndex) => {
         return (
-              <div>Item {groupIndex}.{index}</div>
+          <div>
+            Item {groupIndex}.{index}
+          </div>
         )
       }}
     />
@@ -101,7 +92,6 @@ Check the
 [groups with load on demand](/grouped-with-load-on-demand)
 examples.
 
-
 ### Table
 
 The `TableVirtuoso` component works like the `Virtuoso` one, but with HTML tables. It supports window scrolling, sticky headers, and fixed columns.
@@ -111,7 +101,7 @@ Check the [Basic Table](/hello-table) example for a sample implementation.
 ### Grid
 
 The `VirtuosoGrid` component displays **same sized items** in multiple columns.
-The layout and item sizing is controlled CSS class properties or styled containers, 
+The layout and item sizing is controlled CSS class properties or styled containers,
 which allows you to use media queries, min-width, percentage, etc.
 
 Check the [responsive grid columns](/grid-responsive-columns) example for a sample implementation.
@@ -129,7 +119,7 @@ Check the [footer](/footer), [press load more](/press-to-load-more) and [endless
 ### Pinned Items
 
 The `Virtuoso` component accepts an optional `topItems` property that specifies
-how many items must remain "pinned" at the top of the list. 
+how many items must remain "pinned" at the top of the list.
 Check the [top items](/top-items) example.
 
 ### Scroll to Index
@@ -148,12 +138,12 @@ You can swap the Virtuoso scroller implementation to add custom scroll logic or 
 
 Check the [custom scroll container](/custom-scroll-container) example for a starting point.
 
-## Performance 
+## Performance
 
 Several factors affect the component's performance.
 The first and most important one is the _size of the visible area_.
 Redrawing more items takes more time and reduces the frame rate.
-To see if this affects you, reduce the component width or height; 
+To see if this affects you, reduce the component width or height;
 Set the `style` property to something like `{{width: '200px'}}`.
 
 Next, if the items are complex or slow to render, use [React.memo](https://reactjs.org/docs/react-api.html#reactmemo) for the `itemContent` contents.
@@ -207,7 +197,7 @@ To avoid that, if you are putting paragraphs and headings inside the `item`, mak
 ```jsx
 <Virtuoso
   totalCount={100}
-  item={index => (
+  item={(index) => (
     <div>
       <p style={{ margin: 0 }}>Item {index}</p>
     </div>

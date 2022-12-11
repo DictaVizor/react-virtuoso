@@ -7,9 +7,7 @@ const scriptName = Path.basename(scriptFilePath, '.tsx')
 
 const templatePath = Path.join(__dirname, './__template.html')
 const indexPath = Path.join(__dirname, './__index.html')
-const contents = FS.readFileSync(templatePath)
-  .toString()
-  .replace('{{script}}', scriptName)
+const contents = FS.readFileSync(templatePath).toString().replace('{{script}}', scriptName)
 
 FS.writeFileSync(indexPath, contents)
 
@@ -24,6 +22,6 @@ const options = {
 
 const bundler = new Bundler(indexPath, options)
 
-;(async function() {
+;(async function () {
   return await bundler.serve(1234)
 })()

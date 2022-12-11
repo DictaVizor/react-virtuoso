@@ -71,10 +71,11 @@ function ChatList({ userId, messages = [], onSend, onReceive, placeholder }: Cha
   }
 
   const row = React.useMemo(
-    () => (i: number, { message, id }: { message: string; id: string }) => {
-      const fromUser = id === userId
-      return <Bubble key={i} fromUser={fromUser} text={message} />
-    },
+    () =>
+      (i: number, { message, id }: { message: string; id: string }) => {
+        const fromUser = id === userId
+        return <Bubble key={i} fromUser={fromUser} text={message} />
+      },
     [userId]
   )
 

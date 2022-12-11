@@ -10,17 +10,16 @@ As an optional configuration, the method accepts `align: 'start' | 'center' | 'e
 
 Warning: Using smooth scrolling over many items can kill performance and potentially clash with loading strategies.
 
-
 ```jsx live include-data
 import { Virtuoso } from 'react-virtuoso'
 import { generateUsers, avatar, avatarPlaceholder } from './data'
 import { useState, useMemo, useRef } from 'react'
 
 export default function App() {
-  const [align, setAlign] = useState("start");
-  const [behavior, setBehavior] = useState("auto");
-  const virtuoso = useRef(null);
-  const users = useMemo(() => generateUsers(1000), []);
+  const [align, setAlign] = useState('start')
+  const [behavior, setBehavior] = useState('auto')
+  const virtuoso = useRef(null)
+  const users = useMemo(() => generateUsers(1000), [])
   return (
     <div>
       <ul className="knobs">
@@ -30,9 +29,9 @@ export default function App() {
               virtuoso.current.scrollToIndex({
                 index: 0,
                 align,
-                behavior
-              });
-              return false;
+                behavior,
+              })
+              return false
             }}
           >
             Scroll To 1
@@ -44,9 +43,9 @@ export default function App() {
               virtuoso.current.scrollToIndex({
                 index: 499,
                 align,
-                behavior
-              });
-              return false;
+                behavior,
+              })
+              return false
             }}
           >
             Scroll To 500
@@ -58,9 +57,9 @@ export default function App() {
               virtuoso.current.scrollToIndex({
                 index: 999,
                 align,
-                behavior
-              });
-              return false;
+                behavior,
+              })
+              return false
             }}
           >
             Scroll To 1000
@@ -87,7 +86,7 @@ export default function App() {
         </li>
       </ul>
 
-      <div style={{height: 600}}>
+      <div style={{ height: 600 }}>
         <Virtuoso
           data={users}
           ref={virtuoso}
@@ -96,16 +95,18 @@ export default function App() {
               <div
                 style={{
                   backgroundColor: user.bgColor,
-                  padding: "1rem 0",
+                  padding: '1rem 0',
                 }}
               >
-                <div style={{ float: "left", margin: "1rem" }}>{avatar()}</div>
+                <div style={{ float: 'left', margin: '1rem' }}>{avatar()}</div>
 
-                <h4>{user.index}. {user.name}</h4>
+                <h4>
+                  {user.index}. {user.name}
+                </h4>
 
                 {user.longText}
               </div>
-            );
+            )
           }}
         />
       </div>

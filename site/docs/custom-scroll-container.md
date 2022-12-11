@@ -22,7 +22,7 @@ export default function App() {
       style={{
         border: '5px dashed gray',
         borderRadius: '4px',
-        height: 400
+        height: 400,
       }}
     />
   )

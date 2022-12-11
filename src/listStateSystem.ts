@@ -154,7 +154,6 @@ export const listStateSystem = u.system(
     const itemsRendered = u.stream<ListItems>()
     const startIndex = u.statefulStream<number | undefined>(undefined)
 
-
     u.connect(groupedListSystem.topItemsIndexes, topItemsIndexes)
     u.connect(customStartIndex, startIndex)
 
@@ -237,7 +236,6 @@ export const listStateSystem = u.system(
               return null
             }
 
-
             const firstIndex = offsetPointRanges[0].start
             const lastIndex = offsetPointRanges[offsetPointRanges.length - 1].start
             if (customStartIndex !== undefined) {
@@ -254,7 +252,7 @@ export const listStateSystem = u.system(
                     ...offsetPointRanges,
                   ],
                   'start'
-                  )
+                )
               } else {
                 const customOffsetPointRanges = rangesWithinOffsets(offsetTree, startOffset, Infinity, minStartIndex).filter(
                   ({ start }) => start <= customStartIndex && lastIndex <= start
@@ -273,7 +271,6 @@ export const listStateSystem = u.system(
               offsetPointRanges.sort((a, b) => a.start - b.start)
             }
 
-            
             const maxIndex = totalCount - 1
             const extraSize = offsetPointRanges.filter((range) => range.isCustom).reduce<number>((a, b) => a + b.value.size, 0)
 
@@ -306,17 +303,23 @@ export const listStateSystem = u.system(
                 }
               }
 
-              if(keepIndexRendered && !result.find(({index}) => index === keepIndexRendered)) {
-                result.push({index: keepIndexRendered, size: 0, offset: 0, data: data && data[keepIndexRendered], renderOutside: true, isCustom: true})
+              if (keepIndexRendered && !result.find(({ index }) => index === keepIndexRendered)) {
+                result.push({
+                  index: keepIndexRendered,
+                  size: 0,
+                  offset: 0,
+                  data: data && data[keepIndexRendered],
+                  renderOutside: true,
+                  isCustom: true,
+                })
                 result.sort((a, b) => a.index - b.index)
 
-                const targetIndex = result.findIndex(({index}) => index === keepIndexRendered)
+                const targetIndex = result.findIndex(({ index }) => index === keepIndexRendered)
 
                 result[targetIndex].offset = result?.[targetIndex + 1]?.offset || result?.[targetIndex - 1]?.offset || 0
 
                 console.log(result)
               }
-
             })
 
             return buildListState(items, topItems, totalCount, sizesValue, firstItemIndex)

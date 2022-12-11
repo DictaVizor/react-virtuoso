@@ -34,7 +34,7 @@ It is up to you to build and return the respective content for it.
 ## List with `itemContent`
 
 ```jsx live
-() => {
+;() => {
   const users = useMemo(() => generateUsers(100000), [])
 
   return (
@@ -43,16 +43,17 @@ It is up to you to build and return the respective content for it.
       itemContent={(index) => {
         const user = users[index]
         return (
-        <div
-          style={{
-            backgroundColor: user.bgColor,
-            padding: '1rem 0.5rem',
-          }}
-        >
-          <h4>{user.name}</h4>
-          <div style={{ marginTop: '1rem' }}>{user.description}</div>
-        </div>
-      )}}
+          <div
+            style={{
+              backgroundColor: user.bgColor,
+              padding: '1rem 0.5rem',
+            }}
+          >
+            <h4>{user.name}</h4>
+            <div style={{ marginTop: '1rem' }}>{user.description}</div>
+          </div>
+        )
+      }}
     />
   )
 }

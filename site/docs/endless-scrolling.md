@@ -46,7 +46,6 @@ export default function App() {
   )
 }
 
-
 const Footer = () => {
   return (
     <div
@@ -60,5 +59,4 @@ const Footer = () => {
     </div>
   )
 }
-
 ```

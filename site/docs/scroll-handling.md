@@ -12,14 +12,13 @@ The callback receives true when the user starts scrolling and false shortly afte
 
 Handling this event can improve performance by hiding/replacing certain heavy elements in the items.
 
-
 ```jsx live include-data
 import { Virtuoso } from 'react-virtuoso'
 import { generateUsers, avatar, avatarPlaceholder } from './data'
 import { useState, useMemo } from 'react'
 
 export default function App() {
-  const [isScrolling, setIsScrolling] = useState(false);
+  const [isScrolling, setIsScrolling] = useState(false)
   const users = useMemo(() => generateUsers(100), [])
   return (
     <Virtuoso
@@ -31,18 +30,13 @@ export default function App() {
           <div
             style={{
               backgroundColor: user.bgColor,
-              padding: '1rem 0'
+              padding: '1rem 0',
             }}
           >
-            
-            <div style={{ float: 'left', margin: '1rem' }}>
-              {isScrolling ? avatarPlaceholder() : avatar() }
-            </div>
+            <div style={{ float: 'left', margin: '1rem' }}>{isScrolling ? avatarPlaceholder() : avatar()}</div>
 
             <h4>{user.name}</h4>
-            <div style={{ marginTop: '1rem' }}>
-            {user.longText}
-            </div>
+            <div style={{ marginTop: '1rem' }}>{user.longText}</div>
           </div>
         )
       }}

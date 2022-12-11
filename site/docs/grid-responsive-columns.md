@@ -7,7 +7,7 @@ slug: /grid-responsive-columns/
 
 The `VirtuosoGrid` component displays **equally-sized items**, while supporting multiple items per row.
 
-The component provides no styling out of the box. 
+The component provides no styling out of the box.
 The styling and the layout of the items is be specified by passing two properties - `itemClassName` and `listClassName`.
 
 Alternatively, you can use styled components and pass them as `components.Item` and `components.List`.
@@ -58,29 +58,29 @@ const ListContainer = styled.div`
 
 export default function App() {
   return (
-  <>
-    <VirtuosoGrid
-    style={{ height: 400 }}
-      totalCount={10000}
-      overscan={200}
-      components={{
-        Item: ItemContainer,
-        List: ListContainer,
-        ScrollSeekPlaceholder: ({ height, width, index }) => (
-          <ItemContainer>
-            <ItemWrapper>{'--'}</ItemWrapper>
-          </ItemContainer>
-        ),
-      }}
-      itemContent={index => <ItemWrapper>Item {index}</ItemWrapper>}
-      scrollSeekConfiguration={{
-        enter: velocity => Math.abs(velocity) > 200,
-        exit: velocity => Math.abs(velocity) < 30,
-        change: (_, range) => console.log({ range }),
-      }}
-    />
-    <style>{`html, body, #root { margin: 0; padding: 0 }`}</style>
-  </>
+    <>
+      <VirtuosoGrid
+        style={{ height: 400 }}
+        totalCount={10000}
+        overscan={200}
+        components={{
+          Item: ItemContainer,
+          List: ListContainer,
+          ScrollSeekPlaceholder: ({ height, width, index }) => (
+            <ItemContainer>
+              <ItemWrapper>{'--'}</ItemWrapper>
+            </ItemContainer>
+          ),
+        }}
+        itemContent={(index) => <ItemWrapper>Item {index}</ItemWrapper>}
+        scrollSeekConfiguration={{
+          enter: (velocity) => Math.abs(velocity) > 200,
+          exit: (velocity) => Math.abs(velocity) < 30,
+          change: (_, range) => console.log({ range }),
+        }}
+      />
+      <style>{`html, body, #root { margin: 0; padding: 0 }`}</style>
+    </>
   )
 }
 ```

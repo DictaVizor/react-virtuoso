@@ -8,7 +8,7 @@ slug: /prepend-items/
 Appending items to the list is straightforward - the items at the bottom do not displace the currently rendered ones.
 Prepending items is more complex because the current items should remain at their location, and their indexes should not be offset.
 
-This example shows how to increase the item count and instruct the component that you are prepending items by decreasing the `firstItemIndex` property 
+This example shows how to increase the item count and instruct the component that you are prepending items by decreasing the `firstItemIndex` property
 value when the user scrolls to the top, creating **reverse endless scrolling**.
 
 ```jsx live include-data

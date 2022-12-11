@@ -47,7 +47,6 @@ export default function App() {
   )
 }
 
-
 const MUIComponents = {
   List: React.forwardRef(({ style, children }, listRef) => {
     return (

@@ -23,7 +23,7 @@ export default function App() {
       >
         Append 20 Items
       </button>
-      <Virtuoso data={data} itemContent={itemContent} style={{ height: 300 }} customStartIndex={2}/>
+      <Virtuoso data={data} itemContent={itemContent} style={{ height: 300 }} customStartIndex={2} />
     </div>
   )
 }

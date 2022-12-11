@@ -35,22 +35,14 @@ export default function App() {
       }}
       fixedHeaderContent={() => (
         <TableRow>
-          <TableCell style={{ width: 150, background: 'white' }}>
-            Name
-          </TableCell>
-          <TableCell style={{ background: 'white' }}>
-            Description
-          </TableCell>
+          <TableCell style={{ width: 150, background: 'white' }}>Name</TableCell>
+          <TableCell style={{ background: 'white' }}>Description</TableCell>
         </TableRow>
       )}
       itemContent={(index, user) => (
         <>
-          <TableCell style={{ width: 150, background: 'white' }}>
-            {user.name}
-          </TableCell>
-          <TableCell style={{ background: 'white'  }}>
-            {user.description}
-          </TableCell>
+          <TableCell style={{ width: 150, background: 'white' }}>{user.name}</TableCell>
+          <TableCell style={{ background: 'white' }}>{user.description}</TableCell>
         </>
       )}
     />

@@ -22,16 +22,20 @@ export default function App() {
     <GroupedVirtuoso
       groupCounts={groupCounts}
       style={{ height: 400 }}
-      groupContent={index => {
-        return <div 
-        style={{ 
-          backgroundColor: 'white', 
-          paddingTop: '1rem',
-          borderBottom: '1px solid #ccc' 
-        }}>{groups[index]}</div>
+      groupContent={(index) => {
+        return (
+          <div
+            style={{
+              backgroundColor: 'white',
+              paddingTop: '1rem',
+              borderBottom: '1px solid #ccc',
+            }}
+          >
+            {groups[index]}
+          </div>
+        )
       }}
-
-      itemContent={index => {
+      itemContent={(index) => {
         return <div style={{ backgroundColor: toggleBg(index) }}>{users[index].name}</div>
       }}
     />

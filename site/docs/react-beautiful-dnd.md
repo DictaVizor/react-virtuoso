@@ -64,7 +64,7 @@ const HeightPreservingItem = ({ children, ...props }) => {
       {...props}
       className="height-preserving-container"
       // check styling in the style tag below
-      style={{ '--child-height': `${size}px`, }}
+      style={{ '--child-height': `${size}px` }}
     >
       {children}
     </div>

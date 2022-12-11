@@ -9,14 +9,14 @@ The Virtuoso component exposes an imperative `scrollIntoView` method, which make
 As an optional configuration, the method accepts `behavior: 'smooth' | 'auto'`, and a `done` callback which gets called after the scrolling is done.
 See the example below for its usage.
 
-To test the example below, click anywhere in the list and press up / down arrows. 
+To test the example below, click anywhere in the list and press up / down arrows.
 
 ```jsx live include-data
 import { Virtuoso } from 'react-virtuoso'
 import { generateUsers } from './data'
 import React from 'react'
 
-export default function App( ) {
+export default function App() {
   const ref = React.useRef(null)
   const [currentItemIndex, setCurrentItemIndex] = React.useState(-1)
   const listRef = React.useRef(null)

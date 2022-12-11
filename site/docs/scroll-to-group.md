@@ -5,7 +5,7 @@ sidebar_label: Scroll to Group
 slug: /scroll-to-group/
 ---
 
-This example re-creates the UI of the iOS contacts listview. 
+This example re-creates the UI of the iOS contacts listview.
 
 ```jsx live include-data
 import { GroupedVirtuoso } from 'react-virtuoso'
@@ -22,18 +22,26 @@ export default function App() {
         <GroupedVirtuoso
           ref={virtuoso}
           groupCounts={groupCounts}
-          groupContent={index => {
-          return <div style={{ 
-            backgroundColor: 'white', 
-            padding: '0.3rem 1rem'
-          }}>{groups[index]}</div>
+          groupContent={(index) => {
+            return (
+              <div
+                style={{
+                  backgroundColor: 'white',
+                  padding: '0.3rem 1rem',
+                }}
+              >
+                {groups[index]}
+              </div>
+            )
           }}
-          itemContent={index => {
-            return <div style={{ padding: '0.5rem 1rem', backgroundColor: toggleBg(index) }}>
-            <h4>{users[index].name}</h4>
+          itemContent={(index) => {
+            return (
+              <div style={{ padding: '0.5rem 1rem', backgroundColor: toggleBg(index) }}>
+                <h4>{users[index].name}</h4>
 
-            <p style={{ marginBottom: 0 }}>{users[index].description}</p>
-            </div>
+                <p style={{ marginBottom: 0 }}>{users[index].description}</p>
+              </div>
+            )
           }}
         />
       </div>
@@ -60,7 +68,7 @@ export default function App() {
             <li key={index}>
               <a
                 href="#"
-                onClick={e => {
+                onClick={(e) => {
                   e.preventDefault()
                   virtuoso.current.scrollToIndex({
                     index: itemIndex,

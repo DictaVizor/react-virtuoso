@@ -5,7 +5,10 @@ export default function App() {
   const [customScrollParent, setCustomScrollParent] = React.useState(null)
   return (
     <div style={{ overflow: 'auto', background: 'lightgreen', height: '80vh' }}>
-      <div ref={setCustomScrollParent} style={{ overflow: 'auto', marginTop: 400, background: 'lightgrey', height: '50vh', padding: '50px' }}>
+      <div
+        ref={setCustomScrollParent}
+        style={{ overflow: 'auto', marginTop: 400, background: 'lightgrey', height: '50vh', padding: '50px' }}
+      >
         <ol>
           <li>Scroll down manually, new items should appear.</li>
           <li>Scroll halfway down manually, then scroll the outer green container down, new items should appear.</li>
