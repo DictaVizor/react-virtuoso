@@ -1,1 +1,0 @@
-{"version":3,"file":"useScrollTop.d.ts","sourceRoot":"","sources":["useScrollTop.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,oBAAoB,EAAE,MAAM,kBAAkB,CAAA;AAEvD,aAAK,gBAAgB,GAAG,WAAW,GAAG,IAAI,CAAA;AAE1C,MAAM,CAAC,OAAO,UAAU,OAAO,CAAC,QAAQ,EAAE,CAAC,KAAK,EAAE,oBAAoB,KAAK,IAAI;yBACjD,gBAAgB;;;EAS7C"}
