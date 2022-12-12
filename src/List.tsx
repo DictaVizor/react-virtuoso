@@ -214,6 +214,7 @@ export const Items = React.memo(function VirtuosoItems({ showTopList = false }: 
   const paddingTopAddition = useEmitterValue('paddingTopAddition')
   const firstItemIndex = useEmitterValue('firstItemIndex')
   const statefulTotalCount = useEmitterValue('statefulTotalCount')
+  const keepIndexRendered = useEmitterValue('keepIndexRendered')
 
   const containerStyle: CSSProperties = showTopList
     ? {}
@@ -276,7 +277,14 @@ export const Items = React.memo(function VirtuosoItems({ showTopList = false }: 
                 'data-known-size': item.size,
                 'data-item-index': item.index,
                 'data-item-group-index': item.groupIndex,
-                style: ITEM_STYLE,
+                'data-render-outside': item.renderOutside,
+                style: {
+                  ...ITEM_STYLE,
+                  ...(item.renderOutside && {
+                    height: 0,
+                    opacity: 0,
+                  }),
+                },
               } as any,
               hasGroups
                 ? (itemContent as GroupItemContent<any, any>)(item.index, item.groupIndex!, item.data, context)

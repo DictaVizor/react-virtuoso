@@ -56,8 +56,8 @@ function getChangedChildSizes(children: HTMLCollection, itemSize: SizeFunction, 
     const index = parseInt(child.dataset.index!)
     const knownSize = parseFloat(child.dataset.knownSize!)
     const size = itemSize(child, field)
-
-    if (size === 0) {
+    const renderOutside = Boolean(child.dataset.renderOutside)
+    if (size === 0 && !renderOutside) {
       log('Zero-sized element, this should not happen', { child }, LogLevel.ERROR)
     }
 
