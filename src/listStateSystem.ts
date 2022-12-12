@@ -303,21 +303,31 @@ export const listStateSystem = u.system(
                 }
               }
 
-              if (keepIndexRendered && !result.find(({ index }) => index === keepIndexRendered)) {
-                result.push({
-                  index: keepIndexRendered,
-                  size: 0,
-                  offset: 0,
-                  data: data && data[keepIndexRendered],
-                  renderOutside: true,
-                  isCustom: true,
+              if (keepIndexRendered !== undefined) {
+                const _keepIndexRendered = Array.isArray(keepIndexRendered) ? keepIndexRendered : [keepIndexRendered]
+
+                const insertedIndexes: Array<number> = []
+
+                _keepIndexRendered.sort().forEach((keepIndexRendered) => {
+                  if (result.find(({ index }) => index === keepIndexRendered)) return
+
+                  insertedIndexes.push(keepIndexRendered)
+
+                  result.push({
+                    index: keepIndexRendered,
+                    size: 0,
+                    offset: 0,
+                    data: data && data[keepIndexRendered],
+                    renderOutside: true,
+                    isCustom: true,
+                  })
                 })
+
                 result.sort((a, b) => a.index - b.index)
-
-                const targetIndex = result.findIndex(({ index }) => index === keepIndexRendered)
-
-                result[targetIndex].offset = result?.[targetIndex + 1]?.offset || result?.[targetIndex - 1]?.offset || 0
-
+                insertedIndexes.reverse().forEach((keepIndexRendered) => {
+                  const targetIndex = result.findIndex(({ index }) => index === keepIndexRendered)
+                  result[targetIndex].offset = result?.[targetIndex + 1]?.offset || result?.[targetIndex - 1]?.offset || 0
+                })
               }
             })
 

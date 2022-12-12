@@ -25,7 +25,7 @@ import { Grid } from './Grid'
 import { Table } from './Table'
 
 export interface VirtuosoProps<D, C> extends ListRootProps {
-  keepIndexRendered?: number
+  keepIndexRendered?: number | Array<number>
   customStartIndex?: number
   /**
    * The total amount of items to be rendered.
