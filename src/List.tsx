@@ -280,10 +280,11 @@ export const Items = React.memo(function VirtuosoItems({ showTopList = false }: 
                 'data-render-outside': item.renderOutside,
                 style: {
                   ...ITEM_STYLE,
-                  ...(item.renderOutside && {
-                    height: 0,
-                    opacity: 0,
-                  }),
+                  ...(item.renderOutside &&
+                    !item.useFullHeight && {
+                      height: 0,
+                      opacity: 0,
+                    }),
                 },
               } as any,
               hasGroups

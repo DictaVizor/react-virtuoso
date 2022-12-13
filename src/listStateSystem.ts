@@ -309,23 +309,30 @@ export const listStateSystem = u.system(
                 const insertedIndexes: Array<number> = []
 
                 _keepIndexRendered.sort().forEach((keepIndexRendered) => {
-                  if (result.find(({ index }) => index === keepIndexRendered)) return
+                  const isNumber = typeof keepIndexRendered === 'number'
+                  const index = isNumber ? keepIndexRendered : keepIndexRendered.index
+                  if (result.find((item) => item.index === index)) return
 
-                  insertedIndexes.push(keepIndexRendered)
+
+                  const useFullHeight = isNumber ? false : keepIndexRendered.fullHeight
+
+                  insertedIndexes.push(index)
 
                   result.push({
-                    index: keepIndexRendered,
+                    index,
                     size: 0,
                     offset: 0,
-                    data: data && data[keepIndexRendered],
+                    data: data && data[index],
                     renderOutside: true,
                     isCustom: true,
+                    useFullHeight,
                   })
                 })
 
                 result.sort((a, b) => a.index - b.index)
                 insertedIndexes
-                  .sort((a, b) => a - b).reverse()
+                  .sort((a, b) => a - b)
+                  .reverse()
                   .forEach((keepIndexRendered) => {
                     const targetIndex = result.findIndex(({ index }) => index === keepIndexRendered)
                     result[targetIndex].offset = result?.[targetIndex - 1]?.offset || result?.[targetIndex + 1]?.offset || 0

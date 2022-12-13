@@ -2,6 +2,7 @@ import * as u from '@virtuoso.dev/urx'
 import { domIOSystem } from './domIOSystem'
 import { UP, DOWN, ScrollDirection } from './stateFlagsSystem'
 import { tupleComparator } from './comparators'
+import { KeepIndexRendered } from './components'
 
 export type NumberTuple = [number, number]
 export type Overscan = number | { main: number; reverse: number }
@@ -36,7 +37,7 @@ export const sizeRangeSystem = u.system(
     const increaseViewportBy = u.statefulStream<ViewportIncrease>(0)
     const overscan = u.statefulStream<Overscan>(0)
     const customStartIndex = u.statefulStream<number | undefined>(undefined)
-    const keepIndexRendered = u.statefulStream<number | Array<number> | undefined>(undefined)
+    const keepIndexRendered = u.statefulStream<KeepIndexRendered | Array<KeepIndexRendered> | undefined>(undefined)
     const extraSize = u.stream<number>()
 
     const visibleRange = u.statefulStreamFromEmitter(

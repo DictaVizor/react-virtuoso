@@ -215,6 +215,7 @@ export interface Item<D> {
   data?: D
   isCustom?: boolean
   renderOutside?: boolean
+  useFullHeight?: boolean
 }
 export interface RecordItem<D> extends Item<D> {
   type?: undefined
