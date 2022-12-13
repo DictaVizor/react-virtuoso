@@ -214,7 +214,6 @@ export const Items = React.memo(function VirtuosoItems({ showTopList = false }: 
   const paddingTopAddition = useEmitterValue('paddingTopAddition')
   const firstItemIndex = useEmitterValue('firstItemIndex')
   const statefulTotalCount = useEmitterValue('statefulTotalCount')
-  const keepIndexRendered = useEmitterValue('keepIndexRendered')
 
   const containerStyle: CSSProperties = showTopList
     ? {}
